@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed, inject} from '@angular/core/testing';
 
 import {AuthorsComponent} from './authors.component';
 import {NgxJsonapiModule} from 'ngx-jsonapi';
-import {AuthorService} from './authors.service';
+import {AuthorService, Author} from './authors.service';
 import { By } from '@angular/platform-browser';
 
 function timeout(ms) {
@@ -22,7 +22,7 @@ describe('AuthorsComponent', () => {
           url: '//jsonapiplayground.reyesoft.com/v2/'
         })
       ],
-      providers: [AuthorService],
+      providers: [AuthorService, Author],
 
     })
       .compileComponents();
@@ -38,10 +38,9 @@ describe('AuthorsComponent', () => {
     expect(component).toBeTruthy();
   });
   it('show all the authors', inject([AuthorService], async () => {
-    await timeout(2000);
-    debugger;
     const authorElements = fixture.debugElement.queryAll(By.css('.author'));
-    await timeout(2000);
-    expect(authorElements.length).toBeGreaterThan(3);
+    timeout(1500).then((v) => {
+      expect(authorElements.length).toBeGreaterThan(3);
+    });
   }));
 });
