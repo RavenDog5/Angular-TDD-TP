@@ -11,11 +11,17 @@ export class AuthorsComponent {
   public authors: DocumentCollection<Author>;
 
   constructor(private authorsService: AuthorService) {
-    authorsService
-      .all ({
-        // include: ['']
+      this.getAuthorsData();
+  }
+  /**
+   * getData
+   */
+  public getAuthorsData() {
+    this.authorsService
+      .all({
+        // include: ['books', 'photos'],
       })
-      .subscribe( authors => (this.authors = authors));
+      .subscribe(authors => (this.authors = authors));
   }
 
 
