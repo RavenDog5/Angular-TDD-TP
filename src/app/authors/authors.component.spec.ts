@@ -1,9 +1,13 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, inject} from '@angular/core/testing';
 
 import {AuthorsComponent} from './authors.component';
 import {NgxJsonapiModule} from 'ngx-jsonapi';
 import {AuthorService} from './authors.service';
 import { By } from '@angular/platform-browser';
+
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 describe('AuthorsComponent', () => {
   let component: AuthorsComponent;
@@ -12,8 +16,14 @@ describe('AuthorsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AuthorsComponent],
-      imports: [NgxJsonapiModule],
-      providers: [AuthorService]
+      imports: [
+        NgxJsonapiModule,
+        NgxJsonapiModule.forRoot({
+          url: '//jsonapiplayground.reyesoft.com/v2/'
+        })
+      ],
+      providers: [AuthorService],
+
     })
       .compileComponents();
   }));
@@ -27,8 +37,11 @@ describe('AuthorsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('show all the authors', async () => {
+  it('show all the authors', inject([AuthorService], async () => {
+    await timeout(2000);
+    debugger;
     const authorElements = fixture.debugElement.queryAll(By.css('.author'));
+    await timeout(2000);
     expect(authorElements.length).toBeGreaterThan(3);
-  });
+  }));
 });

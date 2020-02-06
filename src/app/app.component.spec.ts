@@ -1,16 +1,30 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import {AuthorService} from './authors/authors.service';
+import {AppRoutingModule} from './app-routing.module';
+import {NgxJsonapiModule} from 'ngx-jsonapi';
+import {AuthorsComponent} from './authors/authors.component';
+import {APP_BASE_HREF} from '@angular/common';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        AppRoutingModule,
+        NgxJsonapiModule.forRoot({
+          url: '//jsonapiplayground.reyesoft.com/v2/'
+        })
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        AuthorsComponent
       ],
+      providers: [
+        AuthorService,
+        {provide: APP_BASE_HREF, useValue: '/my/app'}
+      ]
     }).compileComponents();
   }));
 
@@ -24,12 +38,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('Angular-TDD-TP');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('Angular-TDD-TP app is running!');
   });
 });
